@@ -20,8 +20,8 @@ public class getDataActivity extends AppCompatActivity {
     ListView list;
     Button btnVeriCek;
 
-    public FirebaseAuth FB;
-    //firebase verileri çekilecek
+    String userid;
+
 
     ProgressDialog progressDialogVeriGetir;
     @Override
@@ -31,14 +31,7 @@ public class getDataActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        userid = MainActivity.firebaseAuth.getCurrentUser().getUid();
 
 
         progressDialogVeriGetir=new ProgressDialog(this);
@@ -47,7 +40,7 @@ public class getDataActivity extends AppCompatActivity {
         list=(ListView)findViewById(R.id.listViewVeri);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("userid");
+        DatabaseReference myRef = database.getReference(userid);
 
         myRef.child("name").setValue("Furkan");
         myRef.child("score").setValue(123);

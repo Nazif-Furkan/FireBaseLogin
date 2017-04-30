@@ -36,6 +36,15 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressDialog progressDialog;
 
+    void signin(){
+
+
+        Intent intent = new Intent(MainActivity.this, SignedIn.class);
+
+        intent.putExtra("email",firebaseAuth.getCurrentUser().getEmail().toString());
+        MainActivity.this.startActivity(intent);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +59,7 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword=(EditText) findViewById(R.id.editTextPassword);
         textViewSignedIn=(TextView)findViewById(R.id.textViewSignin);
         //Eğer zaten oturum açıksa direk diğer sayfaya gider :)
-        if(firebaseAuth.getCurrentUser().getEmail()!=null){
-            Intent intent = new Intent(MainActivity.this, getDataActivity.class);
-            MainActivity.this.startActivity(intent);
-            finish();
-        }
+
         buttonCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+        if(firebaseAuth.getCurrentUser().toString()!=null){
+            signin();
+        }
     }
 
     private void createUser(){
@@ -149,9 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     Toast.makeText(MainActivity.this,"Giriş başarılı",Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(MainActivity.this, getDataActivity.class);
-                    MainActivity.this.startActivity(intent);
-                    finish();
+                    signin();
                 }
                 else {
                     Toast.makeText(MainActivity.this,"Başarısız. Tekrar deneyin.",Toast.LENGTH_SHORT).show();
