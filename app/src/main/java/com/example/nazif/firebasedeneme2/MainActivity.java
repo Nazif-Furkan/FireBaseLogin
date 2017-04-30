@@ -1,7 +1,10 @@
 package com.example.nazif.firebasedeneme2;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -27,11 +30,13 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonCreateAccount;
     private EditText editTextEmail;
     private EditText editTextPassword;
-    private TextView textViewSignup;
+    private TextView textViewSignedIn;
 
-    private FirebaseAuth firebaseAuth;
+    static public FirebaseAuth firebaseAuth;
 
     ProgressDialog progressDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,20 +48,49 @@ public class MainActivity extends AppCompatActivity {
         buttonCreateAccount=(Button) findViewById(R.id.buttonCreateUser);
         editTextEmail=(EditText)findViewById(R.id.editTextMail);
         editTextPassword=(EditText) findViewById(R.id.editTextPassword);
-        textViewSignup=(TextView)findViewById(R.id.textViewSignin);
-
+        textViewSignedIn=(TextView)findViewById(R.id.textViewSignin);
+        //Eğer zaten oturum açıksa direk diğer sayfaya gider :)
+        if(firebaseAuth.getCurrentUser().getEmail()!=null){
+            Intent intent = new Intent(MainActivity.this, getDataActivity.class);
+            MainActivity.this.startActivity(intent);
+            finish();
+        }
         buttonCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                createUser();
+
+                ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+                if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                        connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                    //we are connected to a network
+
+                    createUser();
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this, "İnternet bağlantınızı kontrol edin.", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
 
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerUser();
+                ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+                if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                        connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                    //we are connected to a network
+
+                    registerUser();
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this, "İnternet bağlantınızı kontrol edin.", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
 
@@ -91,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
+
         String email=editTextEmail.getText().toString().trim();
         String password=editTextPassword.getText().toString().trim();
 
@@ -115,11 +150,9 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,"Giriş başarılı",Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(MainActivity.this, getDataActivity.class);
-
                     MainActivity.this.startActivity(intent);
-
-                }else  if (firebaseAuth.getCurrentUser()!=null)
-                    Toast.makeText(MainActivity.this,"ilginç bir başarı",Toast.LENGTH_SHORT).show();
+                    finish();
+                }
                 else {
                     Toast.makeText(MainActivity.this,"Başarısız. Tekrar deneyin.",Toast.LENGTH_SHORT).show();
                 }
