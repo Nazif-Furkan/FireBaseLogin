@@ -100,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
-        if(firebaseAuth.getCurrentUser().toString()!=null){
+
+        if(firebaseAuth.getCurrentUser()!=null){
             signin();
         }
     }

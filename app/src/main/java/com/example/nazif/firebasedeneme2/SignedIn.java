@@ -25,6 +25,7 @@ public class SignedIn extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signed_in);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -46,12 +47,8 @@ public class SignedIn extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Intent intent = getIntent();
 
-        TextView txtEmail=(TextView)findViewById(R.id.textViewEmail);
 
-        txtEmail.setText("Hello");
-        
 
 
     }
@@ -93,6 +90,7 @@ public class SignedIn extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
@@ -106,7 +104,10 @@ public class SignedIn extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            MainActivity.firebaseAuth.signOut();
+            SignedIn.this.startActivity(new Intent(this,MainActivity.class));
+            Toast.makeText(SignedIn.this, "Çıkış başarılı", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
