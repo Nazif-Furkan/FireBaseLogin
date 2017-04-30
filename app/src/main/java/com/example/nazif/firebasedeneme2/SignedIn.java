@@ -25,7 +25,7 @@ public class SignedIn extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signed_in);
-
+        View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -48,8 +48,10 @@ public class SignedIn extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        TextView tv = ((TextView) header.findViewById(R.id.textViewEmail));
+        Intent intent=getIntent();
 
-
+        tv.setText(intent.getStringExtra("email").toString());
 
     }
 
