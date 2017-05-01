@@ -29,7 +29,7 @@
         <activity
             android:name=".SignedIn"
             android:label="@string/title_activity_signed_in"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

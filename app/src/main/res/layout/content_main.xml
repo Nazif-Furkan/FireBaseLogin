@@ -47,10 +47,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewSignin"/>
+            />
+
     </LinearLayout>
 </RelativeLayout>
 </ScrollView>
